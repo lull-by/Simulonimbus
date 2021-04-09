@@ -11,7 +11,7 @@ public class Block : MonoBehaviour
     void Update()
     {
         transform.Translate(Time.deltaTime * direction);
-        if (transform.x > maxX)
+        if (transform.position.x > maxX)
         {
             Destroy(gameObject);
         }
