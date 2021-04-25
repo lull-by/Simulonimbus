@@ -1,23 +1,32 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class BlockManager : MonoBehaviour
 {
-    public Vector3 spawnBoxPoint1 = new Vector3(-6, 6, 6);
-    public Vector3 spawnBoxPoint2 = new Vector3(-7, -6, -6);
-    public int spawnsPerSecond = 10;
-    public GameObject blockPrefab;
-    public float destroyX = 5; // X value that blocks are to be destroyed at
-    private float _maxX, _minX, _maxY, _minY, _maxZ, _minZ;
-    private bool _isBlockPrefabNotNull;
-    private float _secondsPerSpawn;
+    [SerializeField]
+    private Vector3 SpawnBoxPoint1 = new Vector3(-6, 6, 6);
+
+    [SerializeField]
+    private Vector3 SpawnBoxPoint2 = new Vector3(-7, -6, -6);
+
+    [SerializeField, Min(0)]
+    private float SpawnsPerSecond = 10;
+
+    [SerializeField]
+    private GameObject BlockPrefab;
+
+    [SerializeField]
+    private float BlockDestroyX = 5; // X value that blocks are to be destroyed at
+
+    private float maxX, minX, maxY, minY, maxZ, minZ;
+    private bool isBlockPrefabNotNull;
+    private float secondsPerSpawn;
 
     void Start()
     {
-        _isBlockPrefabNotNull = blockPrefab != null;
-        _secondsPerSpawn = 1 / spawnsPerSecond;
+        isBlockPrefabNotNull = BlockPrefab != null;
+        secondsPerSpawn = 1 / SpawnsPerSecond;
         CalculateMinMaxSpawnVectors();
         StartCoroutine(SpawnBlocks());
     }
@@ -27,43 +36,41 @@ public class BlockManager : MonoBehaviour
         while (true)
         {
             SpawnOneBlock();
-            yield return new WaitForSeconds(_secondsPerSpawn);
+            yield return new WaitForSecondsRealtime(secondsPerSpawn);
         }
     }
 
     void SpawnOneBlock()
     {
         var spawnPosition = GetPositionInSpawnBox();
-        if (_isBlockPrefabNotNull)
+        if (isBlockPrefabNotNull)
         {
-            var blockGO = Instantiate(blockPrefab, spawnPosition, Quaternion.identity);
+            var blockGO = Instantiate(BlockPrefab, spawnPosition, Quaternion.identity);
             var block = blockGO.GetComponent<Block>();
-            block.maxX = destroyX;
+            block.maxX = BlockDestroyX;
         }
     }
     
-    #region Helper Methods
     void CalculateMinMaxSpawnVectors()
     {
-        var p1 = spawnBoxPoint1;
-        var p2 = spawnBoxPoint2;
-        _maxX = Mathf.Max(p1.x, p2.x);
-        _minX = Mathf.Min(p1.x, p2.x);
-        _maxY = Mathf.Max(p1.y, p2.y);
-        _minY = Mathf.Min(p1.y, p2.y);
-        _maxZ = Mathf.Max(p1.z, p2.z);
-        _minZ = Mathf.Min(p1.z, p2.z);
+        var p1 = SpawnBoxPoint1;
+        var p2 = SpawnBoxPoint2;
+        maxX = Mathf.Max(p1.x, p2.x);
+        minX = Mathf.Min(p1.x, p2.x);
+        maxY = Mathf.Max(p1.y, p2.y);
+        minY = Mathf.Min(p1.y, p2.y);
+        maxZ = Mathf.Max(p1.z, p2.z);
+        minZ = Mathf.Min(p1.z, p2.z);
     }
 
     Vector3 GetPositionInSpawnBox()
     {
-        var p1 = spawnBoxPoint1;
-        var p2 = spawnBoxPoint2;
+        var p1 = SpawnBoxPoint1;
+        var p2 = SpawnBoxPoint2;
         return new Vector3(
-            x: Random.Range(_minX, _maxX),
-            y: Random.Range(_minY, _maxY),
-            z: Random.Range(_minZ, _maxZ)
+            x: Random.Range(minX, maxX),
+            y: Random.Range(minY, maxY),
+            z: Random.Range(minZ, maxZ)
         );
     }
-    #endregion
 }
