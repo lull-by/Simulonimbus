@@ -1,0 +1,13 @@
+﻿{
+    "Date": "2021-04-24",
+    "Time": "11:00 PM",
+    "DeviceName": "Aurora-3",
+    "OperatingSystem": "Linux 5.10 Manjaro Linux  64bit",
+    "ProcessorType": "Intel(R) Core(TM) i7-8665U CPU @ 1.90GHz",
+    "WarmupLength": 5.0,
+    "TestLength": 10.0,
+    "TotalFrameCount": 602,
+    "MinFramesPerSecond": 40.09814453125,
+    "MaxFramesPerSecond": 149.816650390625,
+    "AverageFramesPerSecond": 39.73429489135742
+}
